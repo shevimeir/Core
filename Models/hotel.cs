@@ -1,7 +1,9 @@
-namespace Core;
+namespace Core.Models;
 
 public class Hotel
-{
+{  
+       public int id { get; set; }
+
      public DateOnly DateEnter { get; set; }
 
      public DateOnly DateExit { get; set; }

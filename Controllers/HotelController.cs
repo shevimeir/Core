@@ -34,10 +34,56 @@ public class HotelController : ControllerBase
         {
             if (HotelRooms[i] == hroom)
             {
-                priceForNight *= ((i + 1)*100);
+                priceForNight *= ((i + 1) * 100);
             }
         }
         
         return priceForNight;
+    } // כאן הסתיימה המתודה CalculatePrice בצורה תקינה
+
+    [HttpGet("{id}")]
+    public ActionResult<Hotel> Get(int id)
+    {
+        var hotel = HotelService.Get(id);
+
+        if (hotel == null)
+            return NotFound();
+
+        return hotel;
+    }
+
+    [HttpPost] 
+    public IActionResult Create(Hotel hotel)
+    {
+        HotelService.Add(hotel);
+        return CreatedAtAction(nameof(Create), new { id = hotel.Id }, hotel);
+    }
+
+    [HttpPut("{id}")]
+    public IActionResult Update(int id, Hotel hotel)
+    {
+        if (id != hotel.Id)
+            return BadRequest();
+
+        var existingHotel = HotelService.Get(id);
+        if (existingHotel is null)
+            return NotFound();
+
+        HotelService.Update(id, hotel);
+        
+        return NoContent();
+    }
+
+    [HttpDelete("{id}")]
+    public IActionResult Delete(int id)
+    {
+        // תוקן האות הקטנה ל-H גדולה
+        var hotel = HotelService.Get(id);
+        if (hotel is null)
+            return NotFound();
+
+        HotelService.Delete(id);
+
+        return Content(HotelService.Count.ToString());
     }
 }

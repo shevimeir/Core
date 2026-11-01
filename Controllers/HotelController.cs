@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
-
+using Core.Models;
+using Core.Services;
+using Core.Middleware;
 namespace Core.Controllers;
 
 [ApiController]
@@ -39,7 +41,7 @@ public class HotelController : ControllerBase
         }
         
         return priceForNight;
-    } // כאן הסתיימה המתודה CalculatePrice בצורה תקינה
+    } 
 
     [HttpGet("{id}")]
     public ActionResult<Hotel> Get(int id)
@@ -77,7 +79,6 @@ public class HotelController : ControllerBase
     [HttpDelete("{id}")]
     public IActionResult Delete(int id)
     {
-        // תוקן האות הקטנה ל-H גדולה
         var hotel = HotelService.Get(id);
         if (hotel is null)
             return NotFound();
